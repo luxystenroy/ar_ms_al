@@ -1,39 +1,55 @@
 package cl.minsal.ar.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Respuesta {
-	private Object explanation;
-	private String message;
-	private int status_code;
-	
-	public Respuesta() {
-		super();
-	}
 	
 	
-	public Respuesta(Object explanation, String message, int status_code){
-		this.explanation = explanation;
-		this.message = message;
-		this.status_code = status_code;
+	private Estado estado;
+	
+	private Object resultado;
+	
+	private Estado observaciones;
+	
+	@JsonProperty("error")
+	private String errorMessage;
+
+	
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
+	public Object getResultado() {
+		return resultado;
+	}
+
+	public void setResultado(Object resultado) {
+		this.resultado = resultado;
+	}
+
+	public Estado getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(Estado observaciones) {
+		this.observaciones = observaciones;
 	}
 	
-	public Object getExplanation() {
-		return explanation;
-	}
-	public void setExplanation(Object explanation) {
-		this.explanation = explanation;
-	}
-	public String getMessage() {
-		return message;
-	}
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	public int getStatus_code() {
-		return status_code;
-	}
-	public void setStatus_code(int status_code) {
-		this.status_code = status_code;
-	}
+	
+	
 	
 	
 }

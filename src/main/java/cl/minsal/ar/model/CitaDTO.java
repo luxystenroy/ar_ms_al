@@ -1,9 +1,8 @@
 package cl.minsal.ar.model;
 
-import java.sql.Date;
-import java.time.OffsetDateTime;
 
-public class Cita {
+
+public class CitaDTO {
 	
 	private String idCitaAps;
 	private String idCentro;
