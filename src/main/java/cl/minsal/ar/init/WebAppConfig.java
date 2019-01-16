@@ -30,38 +30,21 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 @EnableJpaRepositories("cl.minsal.ar.repository")
 @EnableSpringDataWebSupport
 public class WebAppConfig {
-    private static final String PROPERTY_NAME_DATABASE_DRIVER = "spring.datasource.driver-class-name";
-    private static final String PROPERTY_NAME_DATABASE_PASSWORD = "spring.datasource.password";
-    private static final String PROPERTY_NAME_DATABASE_URL = "spring.datasource.url";
-    private static final String PROPERTY_NAME_DATABASE_USERNAME = "spring.datasource.username";
-
+    
     private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
     private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
-    private static final String PROPERTY_NAME_HIBERNATE_DDL_AUTO = "hibernate.ddl-auto";
     private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
-
     private static final String PROPERTY_NAME_JNDI = "spring.datasource.data-source-jndi";
 
     @Resource
     private Environment env;
 
-    /*@Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName(env.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
-        dataSource.setUrl(env.getRequiredProperty(PROPERTY_NAME_DATABASE_URL));
-        dataSource.setUsername(env.getRequiredProperty(PROPERTY_NAME_DATABASE_USERNAME));
-        dataSource.setPassword(env.getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
-
-        return dataSource;
-    }*/
-
+   
     @Bean
     public DataSource dataSource() {
         JndiDataSourceLookup dataSourceLookup = new JndiDataSourceLookup();
-        DataSource dataSource = dataSourceLookup.getDataSource(env.getRequiredProperty(PROPERTY_NAME_JNDI));
-        return dataSource;
+        
+        return dataSourceLookup.getDataSource(env.getRequiredProperty(PROPERTY_NAME_JNDI));
     }
 
     @Bean
@@ -80,7 +63,6 @@ public class WebAppConfig {
         Properties properties = new Properties();
         properties.put(PROPERTY_NAME_HIBERNATE_DIALECT,	env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_DIALECT));
         properties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL));
-        //properties.put(PROPERTY_NAME_HIBERNATE_DDL_AUTO, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_DDL_AUTO));
         return properties;
     }
 

@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -53,9 +53,11 @@ public class CitaDetalle {
 	@Column(name = "canal", nullable = false, updatable = false)
 	private String canal;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cita_id_cita")
-	private Cita cita;
+	@ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "centro_id_centro")
+	private Centro centro;
+	
+	
 	
 
 	public Integer getIdDetalle() {
@@ -138,12 +140,21 @@ public class CitaDetalle {
 		this.nombreEspecialista = nombreEspecialista;
 	}
 
-	public Cita getCita() {
-		return cita;
+
+	public String getCanal() {
+		return canal;
 	}
 
-	public void setCita(Cita cita) {
-		this.cita = cita;
+	public void setCanal(String canal) {
+		this.canal = canal;
+	}
+
+	public Centro getCentro() {
+		return centro;
+	}
+
+	public void setCentro(Centro centro) {
+		this.centro = centro;
 	}
 	
 	

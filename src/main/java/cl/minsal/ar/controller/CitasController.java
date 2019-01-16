@@ -3,25 +3,33 @@ package cl.minsal.ar.controller;
 
 
 
+
+
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import cl.minsal.ar.entity.CitaDetalle;
 import cl.minsal.ar.exception.MinsalARException;
 import cl.minsal.ar.model.CitaDTO;
-import cl.minsal.ar.model.Estado;
-import cl.minsal.ar.model.Respuesta;
+import cl.minsal.ar.model.EstadoDTO;
+import cl.minsal.ar.model.RespuestaDTO;
 import cl.minsal.ar.service.CitasService;
 import cl.minsal.ar.service.Mapper;
+import cl.minsal.ar.util.ValidationErrorBuilder;
 import io.swagger.annotations.ApiOperation;
 
 /**
@@ -41,22 +49,23 @@ public class CitasController {
 	@Autowired
 	Mapper mapper;
 	
-	@ApiOperation(value = "Citas", notes = "Obtener todos los centros")
+	@ApiOperation(value = "Citas", notes = "Agregar citas")
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<Respuesta> addCita(@RequestBody CitaDTO citaDto) {
+	public @ResponseBody ResponseEntity<RespuestaDTO> addCita(@Valid @RequestBody CitaDTO citaDto) {
 		
 		
 		LOG.info("Entrada /citas "  + citaDto.toString());
-		Respuesta res = new Respuesta();
+		RespuestaDTO res = new RespuestaDTO();
 		
 		
 		
 		try {
-			CitaDetalle citaDetalle = mapper.getCitaDetalleFromCitaDTO(citaDto);
-			res.setResultado(citasService.addCitaDetalle(citaDetalle));
+			
+			res.setResultado(citasService.addCitaDetalleAndAddEstado(citaDto));
 			res.setEstado(getSuccesResult());
 		} catch (MinsalARException e) {
-			res.setEstado(getEstadoByMinsalException(e));
+			res.setEstado(getNotOKResult());
+			res.addEstadoDTO(getEstadoByMinsalException(e));
 			
 		}
 		
@@ -64,31 +73,48 @@ public class CitasController {
 	
 		
 
-		return new ResponseEntity<Respuesta>(res,HttpStatus.OK);
+		return new ResponseEntity<RespuestaDTO>(res,HttpStatus.OK);
 		
 	}
 
-	private Estado getEstadoByMinsalException(MinsalARException e) {
-		Estado estado = new Estado();
+	private EstadoDTO getEstadoByMinsalException(MinsalARException e) {
+		EstadoDTO estado = new EstadoDTO();
 		estado.setCodigo(e.getCode());
 		estado.setDescripcion(e.getMessage());
 		return estado;
 	}
 
-	private Estado getSuccesResult() {
-		Estado estado = new Estado();
+	private EstadoDTO getSuccesResult() {
+		EstadoDTO estado = new EstadoDTO();
 		estado.setCodigo("OK");
 		estado.setDescripcion("resultado exitoso");
 		return estado;
 	}
-
-	private Estado getEstadoFromMinsalARException(MinsalARException e) {
+	
+	@ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public RespuestaDTO handleException(MethodArgumentNotValidException exception) {
+        RespuestaDTO rs = new RespuestaDTO();
+		rs.setEstado(getNotOKResult());
 		
-		Estado estado = new Estado();
-		estado.setCodigo(e.getCode());
-		estado.setDescripcion(e.getMessage());
+		
+		rs.setObservaciones(createValidationError(exception));
+		
+		return rs;
+    }
+
+    private List<EstadoDTO> createValidationError(MethodArgumentNotValidException e) {
+        return ValidationErrorBuilder.fromBindingErrors(e.getBindingResult());
+    }
+    
+    private EstadoDTO getNotOKResult() {
+		EstadoDTO estado = new EstadoDTO();
+		estado.setCodigo("NOK");
+		estado.setDescripcion("resultado con observaciones");
 		return estado;
 	}
+
+	
 	
 	
 	

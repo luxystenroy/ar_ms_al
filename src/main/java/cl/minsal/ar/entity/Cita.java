@@ -3,19 +3,15 @@ package cl.minsal.ar.entity;
 
 
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -34,7 +30,7 @@ public class Cita {
 	private Integer idCita;
 
     @Column(name = "id_folio")
-	private Integer idFolio;
+	private String idFolio;
 	
 	@Column(name = "origen_cita", nullable = false, updatable = false)
 	private String origen;	
@@ -51,15 +47,13 @@ public class Cita {
 	@Column(name = "id_cita_aps", nullable = false, updatable = false)
 	private String idCitaAps;
 	
-	@OneToOne(mappedBy = "cita")
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_cita")
 	private CitaDetalle citaDetalle;
 	
 	
-	@OneToMany(
-	        cascade = CascadeType.ALL,
-	        orphanRemoval = true
-	    )
-	private List<Estado> comments = new ArrayList<Estado>();
+	@OneToMany(mappedBy="cita")
+	private Set<Estado> estados;
 	 
 	
 
@@ -71,11 +65,11 @@ public class Cita {
 		this.idCita = idCita;
 	}
 
-	public Integer getIdFolio() {
+	public String getIdFolio() {
 		return idFolio;
 	}
 
-	public void setIdFolio(Integer idFolio) {
+	public void setIdFolio(String idFolio) {
 		this.idFolio = idFolio;
 	}
 
@@ -110,6 +104,25 @@ public class Cita {
 	public void setIdCitaAps(String idCitaAps) {
 		this.idCitaAps = idCitaAps;
 	}
+
+	public CitaDetalle getCitaDetalle() {
+		return citaDetalle;
+	}
+
+	public void setCitaDetalle(CitaDetalle citaDetalle) {
+		this.citaDetalle = citaDetalle;
+	}
+
+	public Set<Estado> getEstados() {
+		return estados;
+	}
+
+	public void setEstados(Set<Estado> estados) {
+		this.estados = estados;
+	}
+	
+	
+	
 	
 
 

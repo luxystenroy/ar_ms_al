@@ -1,6 +1,6 @@
 package cl.minsal.ar.model;
 
-public class Estado {
+public class EstadoDTO {
 	
 	private String codigo;
 	private String descripcion;
