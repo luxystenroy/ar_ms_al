@@ -50,6 +50,9 @@ public class CitaDTO {
 	@NotBlank(message = "origen no puede estar vacío o nulo")
 	@NotEmpty(message = "origen no puede estar vacío o nulo")
 	private String origen;
+	@NotBlank(message = "tipoCita no puede estar vacío o nulo")
+	@NotEmpty(message = "tipoCita no puede estar vacío o nulo")
+	private String tipoCita;
 	
 	public String getHoracita() {
 		return horacita;
@@ -140,6 +143,20 @@ public class CitaDTO {
 	}
 	public void setOrigen(String origen) {
 		this.origen = origen;
+	}
+	@Override
+	public String toString() {
+		return "CitaDTO [idCitaAps=" + idCitaAps + ", idCentro=" + idCentro + ", estado=" + estado + ", horacita="
+				+ horacita + ", nombreCentro=" + nombreCentro + ", rutUsuario=" + rutUsuario + ", nombreUsuario="
+				+ nombreUsuario + ", rutPaciente=" + rutPaciente + ", nombrePaciente=" + nombrePaciente
+				+ ", tipoConsulta=" + tipoConsulta + ", nombreEspecialista=" + nombreEspecialista + ", email=" + email
+				+ ", telefono=" + telefono + ", canal=" + canal + ", origen=" + origen + "]";
+	}
+	public String getTipoCita() {
+		return tipoCita;
+	}
+	public void setTipoCita(String tipoCita) {
+		this.tipoCita = tipoCita;
 	}
 	
 	

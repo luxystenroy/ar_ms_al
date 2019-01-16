@@ -8,6 +8,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -32,9 +34,6 @@ public class Cita {
     @Column(name = "id_folio")
 	private String idFolio;
 	
-	@Column(name = "origen_cita", nullable = false, updatable = false)
-	private String origen;	
-	
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fech_create_cita", nullable = false, updatable = false)
@@ -50,6 +49,10 @@ public class Cita {
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_cita")
 	private CitaDetalle citaDetalle;
+	
+	@Enumerated(EnumType.STRING)
+    @Column(length = 3,name = "tipo_cita", nullable = false, updatable = false)
+	private TipoCita tipoCita;
 	
 	
 	@OneToMany(mappedBy="cita")
@@ -71,14 +74,6 @@ public class Cita {
 
 	public void setIdFolio(String idFolio) {
 		this.idFolio = idFolio;
-	}
-
-	public String getOrigen() {
-		return origen;
-	}
-
-	public void setOrigen(String origen) {
-		this.origen = origen;
 	}
 
 	public Date getCreateCita() {
@@ -119,6 +114,14 @@ public class Cita {
 
 	public void setEstados(Set<Estado> estados) {
 		this.estados = estados;
+	}
+
+	public TipoCita getTipoCita() {
+		return tipoCita;
+	}
+
+	public void setTipoCita(TipoCita tipoCita) {
+		this.tipoCita = tipoCita;
 	}
 	
 	

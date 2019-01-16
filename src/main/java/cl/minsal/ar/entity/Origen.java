@@ -4,7 +4,7 @@ import cl.minsal.ar.exception.MinsalARException;
 
 public enum Origen {
 	
-	APS,WEB,MOV;
+	HD,AR,WEB,MOV;
 	
 	public static void validate(String origen) throws MinsalARException {
 		

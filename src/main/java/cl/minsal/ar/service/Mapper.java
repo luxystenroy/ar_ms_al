@@ -9,6 +9,7 @@ import cl.minsal.ar.entity.CitaDetalle;
 import cl.minsal.ar.entity.Estado;
 import cl.minsal.ar.entity.EstadoCitaAPS;
 import cl.minsal.ar.entity.Origen;
+import cl.minsal.ar.entity.TipoCita;
 import cl.minsal.ar.exception.MinsalARException;
 import cl.minsal.ar.model.CitaDTO;
 import cl.minsal.ar.model.RsCita;
@@ -24,13 +25,12 @@ public class Mapper {
 	 * @throws MinsalARException
 	 */
 	public Cita getFromCitaDTOToCita(CitaDTO citaDTO) throws MinsalARException {
-		
+		TipoCita.validate(citaDTO.getTipoCita());
 		Cita cita = new Cita();
 		cita.setCreateCita(new Date());
 		cita.setIdCitaAps(citaDTO.getIdCitaAps());
-		cita.setOrigen(citaDTO.getOrigen());
 		cita.setHoraCita(MinsalARUtil.fromApsDateFormatToDate(citaDTO.getHoracita()));
-
+		cita.setTipoCita(TipoCita.valueOf(citaDTO.getTipoCita().toUpperCase()));
 		return cita;
 		
 		
@@ -44,6 +44,7 @@ public class Mapper {
 	public Estado getEstadoFromCitaDTO(CitaDTO citaDTO) throws MinsalARException {
 		
 		Origen.validate(citaDTO.getOrigen());
+		
 		
 		Estado estado = new Estado();
 		estado.setEstadoCita(EstadoCitaAPS.getEnumByName(citaDTO.getEstado()));

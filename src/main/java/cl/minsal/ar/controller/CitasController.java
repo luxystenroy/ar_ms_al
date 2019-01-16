@@ -66,13 +66,13 @@ public class CitasController {
 		} catch (MinsalARException e) {
 			res.setEstado(getNotOKResult());
 			res.addEstadoDTO(getEstadoByMinsalException(e));
+			return new ResponseEntity<RespuestaDTO>(res,HttpStatus.CONFLICT);
 			
 		}
 		
-		
 	
 		
-
+		LOG.info("Salida /citas " + res.toString());
 		return new ResponseEntity<RespuestaDTO>(res,HttpStatus.OK);
 		
 	}
