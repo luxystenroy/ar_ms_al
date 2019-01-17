@@ -2,7 +2,6 @@ package cl.minsal.ar.entity;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -38,8 +37,9 @@ public class Estado {
     @Column(length = 3,name = "origen", nullable = false, updatable = false)
 	private Origen origen;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "cita_id_cita")
+	
+	@ManyToOne
+	@JoinColumn(name = "cita_id_cita")
     private Cita cita;
 
 	public Integer getIdEstado() {
@@ -81,6 +81,8 @@ public class Estado {
 	public void setCita(Cita cita) {
 		this.cita = cita;
 	}
+
+	
 	
 	
 

@@ -5,10 +5,12 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -56,6 +58,10 @@ public class CitaDetalle {
 	@ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "centro_id_centro")
 	private Centro centro;
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "cita_id_cita")
+	private Cita cita;
 	
 	
 	
@@ -156,6 +162,16 @@ public class CitaDetalle {
 	public void setCentro(Centro centro) {
 		this.centro = centro;
 	}
+
+	public Cita getCita() {
+		return cita;
+	}
+
+	public void setCita(Cita cita) {
+		this.cita = cita;
+	}
+
+	
 	
 	
 	

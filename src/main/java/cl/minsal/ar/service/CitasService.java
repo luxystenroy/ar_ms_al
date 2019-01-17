@@ -41,7 +41,6 @@ public class CitasService {
 	@Transactional
 	public RsCita addCitaDetalleAndAddEstado(CitaDTO citaDTO) throws MinsalARException {
 		
-		RsCita rsCita;
 		
 		CitaDetalle citaDetalle = mapper.getCitaDetalleFromCitaDTO(citaDTO);
 		Cita cita = mapper.getFromCitaDTOToCita(citaDTO);
@@ -52,18 +51,26 @@ public class CitasService {
 		citaDetalle.setCentro(centro);
 		
 		try {
+			
+			
+			Cita citaresult = citaRepository.save(cita);
+			
+			estado.setCita(citaresult);
+			
+			Estado estadoResult = estadoRepository.saveAndFlush(estado);
+			
 			Set<Estado> setEstado = new HashSet<Estado>();
-			setEstado.add(estadoRepository.save(estado));
+			setEstado.add(estadoResult);
+			
+			citaDetalle.setCita(citaresult);
+			
+			CitaDetalle citadetalleResult = citaDetalleRepository.save(citaDetalle);
+			
+			cita.setCitaDetalle(citadetalleResult);
 			cita.setEstados(setEstado);
 			
 			
 			
-			citaRepository.save(cita);
-			
-			
-			cita.setCitaDetalle(citaDetalle);
-		
-			citaDetalleRepository.save(cita.getCitaDetalle());
 			
 			
 		}catch (TransactionException e) {
@@ -71,11 +78,53 @@ public class CitasService {
 		}
 	
 		
-		rsCita = mapper.getRsCitaFromCita(cita);
-		return rsCita;
+		return mapper.getRsCitaFromCitaAndLastEstado(cita, getTheLastEstadoByCita(cita.getIdCita()));
+		
 	
 		
 	}
+	
+	@Transactional
+	public RsCita getRsCitabyIdFolio(String idFolio) throws MinsalARException{
+		
+	
+		
+		Cita cita = getCitaByIdFolio(idFolio);
+		
+		Estado estado = getTheLastEstadoByCita(cita.getIdCita());
+		
+		
+		
+		return mapper.getRsCitaFromCitaAndLastEstado(cita, estado);
+		
+	}
+	
+	
+	public Estado getTheLastEstadoByCita(Integer idCita) throws MinsalARException {
+		
+		Estado estado = estadoRepository.getTheLastEstadoByIdCita(idCita);
+		if(null == estado ) {
+			throw new MinsalARException("Cita sin estado","006");
+		}
+		return estado;
+	}
+	
+	
+	public Cita getCitaByIdFolio(String idFolio) throws MinsalARException {
+		
+		Cita cita = citaRepository.findByidFolio(idFolio);
+		
+		if(null == cita) {
+			throw new MinsalARException("Cita no encontrada","006");
+		}
+		return cita;
+	}
+	
+	
+	
+	
+	
+	
 
 	private String getFolio(CitaDTO citaDTO) {
 		StringBuilder idFolio = new StringBuilder();

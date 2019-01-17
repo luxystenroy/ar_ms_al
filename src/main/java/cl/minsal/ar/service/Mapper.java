@@ -77,16 +77,12 @@ public class Mapper {
 		
 	}
 	
-	public RsCita getRsCitaFromCita(Cita cita) {
+	public RsCita getRsCitaFromCitaAndLastEstado(Cita cita, Estado estado) {
 		
 		CitaDetalle citaDetalle = cita.getCitaDetalle();
-		Estado ultimoEstado = new Estado();
-		for (Estado estado : cita.getEstados()) {
-			ultimoEstado = estado;
-		}
 		
 		RsCita rsCita = new RsCita();
-		rsCita.setEstado(ultimoEstado.getEstadoCita().getRealName());
+		rsCita.setEstado(estado.getEstadoCita().getRealName());
 		rsCita.setHoraCita(MinsalARUtil.fromDateToFormatFrontString(cita.getHoraCita()));
 		rsCita.setIdAPSCita(cita.getIdCitaAps());
 		rsCita.setIdCentroAtencion(citaDetalle.getCentro().getidCentro().toString());
@@ -96,6 +92,8 @@ public class Mapper {
 		rsCita.setIdCita(cita.getIdCita().toString());
 		rsCita.setEmail(citaDetalle.getEmailUsuario());
 		rsCita.setTelefono(citaDetalle.getTelefonoUsuario());
+		rsCita.setRutPaciente(citaDetalle.getRutPaciente());
+		rsCita.setRutUsuario(citaDetalle.getRutUsuario());
 		
 		return rsCita;
 		

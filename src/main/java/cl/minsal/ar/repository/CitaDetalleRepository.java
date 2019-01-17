@@ -13,6 +13,5 @@ import cl.minsal.ar.entity.CitaDetalle;
 public interface CitaDetalleRepository extends JpaRepository<CitaDetalle, Integer> {
 	
 	
-
 	
 }

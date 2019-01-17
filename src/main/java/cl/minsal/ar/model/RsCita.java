@@ -14,6 +14,7 @@ public class RsCita {
 	private String email;
 	private String rutUsuario;
 	private String rutPaciente;
+	
 	public String getIdCita() {
 		return idCita;
 	}
@@ -73,6 +74,18 @@ public class RsCita {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getRutUsuario() {
+		return rutUsuario;
+	}
+	public void setRutUsuario(String rutUsuario) {
+		this.rutUsuario = rutUsuario;
+	}
+	public String getRutPaciente() {
+		return rutPaciente;
+	}
+	public void setRutPaciente(String rutPaciente) {
+		this.rutPaciente = rutPaciente;
 	}
 	
 

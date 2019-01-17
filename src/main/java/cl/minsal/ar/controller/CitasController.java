@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -76,6 +77,30 @@ public class CitasController {
 		return new ResponseEntity<RespuestaDTO>(res,HttpStatus.OK);
 		
 	}
+
+	@ApiOperation(value = "Citas", notes = "Agregar citas")
+	@RequestMapping(value = "/{idFolio}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<RespuestaDTO> getCitaByFolio(@PathVariable("idFolio") long id) {
+		
+		RespuestaDTO res = new RespuestaDTO();
+		
+		try {
+			res.setResultado(citasService.getRsCitabyIdFolio(String.valueOf(id)));
+			res.setEstado(getSuccesResult());
+		}catch (MinsalARException e) {
+			res.setEstado(getNotOKResult());
+			res.addEstadoDTO(getEstadoByMinsalException(e));
+			return new ResponseEntity<RespuestaDTO>(res,HttpStatus.CONFLICT);
+			
+		}
+		
+		
+		
+		return new ResponseEntity<RespuestaDTO>(res,HttpStatus.OK);
+	} 
+	
+	
+	
 
 	private EstadoDTO getEstadoByMinsalException(MinsalARException e) {
 		EstadoDTO estado = new EstadoDTO();

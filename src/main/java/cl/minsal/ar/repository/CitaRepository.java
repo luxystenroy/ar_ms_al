@@ -15,6 +15,9 @@ public interface CitaRepository extends JpaRepository<Cita, Integer> {
 	@Query(value = "SELECT nextval('lk_cita_idfolio_seq')", nativeQuery =
             true)
     Integer getNextSeriesIdFolio();
+	
+	
+	Cita findByidFolio(String idFolio);
 
 	
 }

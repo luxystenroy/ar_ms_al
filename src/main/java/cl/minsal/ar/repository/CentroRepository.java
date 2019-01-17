@@ -15,4 +15,5 @@ public interface CentroRepository extends JpaRepository<Centro, Integer> {
 
 	Centro findByidCentro(Integer id);
 	Centro findBynombreCentro(String nombre);
+
 }
